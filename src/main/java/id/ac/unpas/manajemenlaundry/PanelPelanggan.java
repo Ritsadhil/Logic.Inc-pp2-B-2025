@@ -65,9 +65,24 @@ public class PanelPelanggan extends JPanel {
         tablePelanggan = new JTable(model);
         add(new JScrollPane(tablePelanggan), BorderLayout.CENTER);
         
-        loadData(); 
+        loadData();
         
-    } 
+        // ===== EVENT LISTENER =====
+        btnSimpan.addActionListener(e -> simpanData());
+        btnUbah.addActionListener(e -> ubahData());
+        btnHapus.addActionListener(e -> hapusData());
+        btnClear.addActionListener(e -> clearForm());
+        btnCari.addActionListener(e -> cariData());
+
+        tablePelanggan.getSelectionModel().addListSelectionListener(e -> {
+            int row = tablePelanggan.getSelectedRow();
+            if (row != -1) {
+                txtNama.setText(model.getValueAt(row, 1).toString());
+                txtHP.setText(model.getValueAt(row, 2).toString());
+            }
+        });
+        
+    }
 
     public void loadData() {
         model.setRowCount(0);
@@ -88,4 +103,116 @@ public class PanelPelanggan extends JPanel {
         }
     }
     
+     // ================= CREATE =================
+    public void simpanData() {
+        if (txtNama.getText().isEmpty() || txtHP.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nama dan No HP tidak boleh kosong!");
+            return;
+        }
+
+        try {
+            Connection conn = KoneksiDB.configDB();
+            Statement stm = conn.createStatement();
+            stm.executeUpdate(
+                "INSERT INTO pelanggan (nama, no_hp) VALUES ('"
+                + txtNama.getText() + "', '"
+                + txtHP.getText() + "')"
+            );
+
+            JOptionPane.showMessageDialog(this, "Data berhasil disimpan");
+            clearForm();
+            loadData();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    // ================= UPDATE =================
+    public void ubahData() {
+        int row = tablePelanggan.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih data yang akan diubah!");
+            return;
+        }
+
+        String id = model.getValueAt(row, 0).toString();
+
+        try {
+            Connection conn = KoneksiDB.configDB();
+            Statement stm = conn.createStatement();
+            stm.executeUpdate(
+                "UPDATE pelanggan SET nama='"
+                + txtNama.getText() + "', no_hp='"
+                + txtHP.getText() + "' WHERE id=" + id
+            );
+
+            JOptionPane.showMessageDialog(this, "Data berhasil diubah");
+            clearForm();
+            loadData();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    // ================= DELETE =================
+    public void hapusData() {
+        int row = tablePelanggan.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih data yang akan dihapus!");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Yakin ingin menghapus data?",
+            "Konfirmasi",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            String id = model.getValueAt(row, 0).toString();
+
+            try {
+                Connection conn = KoneksiDB.configDB();
+                Statement stm = conn.createStatement();
+                stm.executeUpdate("DELETE FROM pelanggan WHERE id=" + id);
+
+                JOptionPane.showMessageDialog(this, "Data berhasil dihapus");
+                clearForm();
+                loadData();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }
+
+    // ================= SEARCH =================
+    public void cariData() {
+        model.setRowCount(0);
+        try {
+            Connection conn = KoneksiDB.configDB();
+            Statement stm = conn.createStatement();
+            ResultSet res = stm.executeQuery(
+                "SELECT * FROM pelanggan WHERE nama LIKE '%" + txtCari.getText() + "%'"
+            );
+
+            while (res.next()) {
+                model.addRow(new Object[]{
+                    res.getString("id"),
+                    res.getString("nama"),
+                    res.getString("no_hp")
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    // ================= CLEAR =================
+    public void clearForm() {
+        txtNama.setText("");
+        txtHP.setText("");
+        txtCari.setText("");
+        tablePelanggan.clearSelection();
+    }
 }
