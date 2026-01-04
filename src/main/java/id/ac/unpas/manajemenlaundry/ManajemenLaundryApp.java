@@ -7,7 +7,6 @@ package id.ac.unpas.manajemenlaundry;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
 
 /**
  *
@@ -26,18 +25,10 @@ public class ManajemenLaundryApp extends JFrame {
         tabbedPane.addTab("Kelola Pelanggan", new PanelPelanggan());
         tabbedPane.addTab("Kelola Layanan", new PanelLayanan());
         tabbedPane.addTab("Transaksi Laundry", new PanelTransaksi());
+        tabbedPane.addTab("Riwayat Transaksi", new PanelRiwayat());
 
         add(tabbedPane);
         setVisible(true);
     }
-
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // buat tampilan nyesuaiin sama OS biar enak diliat -Harits
-        } catch (Exception e) {
-        }
-        new ManajemenLaundryApp();
-    }
-
 
 }

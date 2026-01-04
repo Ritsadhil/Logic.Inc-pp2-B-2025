@@ -310,7 +310,8 @@ public class PanelTransaksi extends JPanel {
                          "t.berat, t.total_harga, t.status " +
                          "FROM transaksi t " +
                          "JOIN pelanggan p ON t.id_pelanggan = p.id " +
-                         "JOIN layanan l ON t.id_layanan = l.id";
+                         "JOIN layanan l ON t.id_layanan = l.id " +
+                         "WHERE t.status = 'Proses'";
             
             ResultSet res = stm.executeQuery(sql);
 
