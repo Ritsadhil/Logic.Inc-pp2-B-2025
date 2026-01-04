@@ -7,7 +7,7 @@ public class KoneksiDB {
 
     public static Connection configDB() throws SQLException {
         try {
-            String url = "jdbc:mysql://localhost:3306/manajemenlaundrydb";
+            String url = "jdbc:mysql://localhost:3306/manajemenlaundryDB";
             String user = "root";
             String pass = "";
 
