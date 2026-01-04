@@ -25,8 +25,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelTransaksi extends JPanel {
-    public JComboBox cbPelanggan, cbLayanan;
-    public JTextField txtBerat, txtStatus;
+    public JComboBox cbPelanggan, cbLayanan, cbStatus;
+    public JTextField txtBerat;
     public JButton btnTambah, btnUbah, btnHapus, btnRefresh;
     public JTable tableTransaksi;
     public DefaultTableModel model;
@@ -50,8 +50,9 @@ public class PanelTransaksi extends JPanel {
         panelForm.add(txtBerat);
 
         panelForm.add(new JLabel("Status (Proses/Selesai):"));
-        txtStatus = new JTextField();
-        panelForm.add(txtStatus);
+        String[] statusOptions = {"Proses", "Selesai"};
+        cbStatus = new JComboBox(statusOptions);
+        panelForm.add(cbStatus);
 
         // tombol
         JPanel panelTombol = new JPanel(new FlowLayout());
@@ -137,9 +138,11 @@ public class PanelTransaksi extends JPanel {
                             break;
                         }
                     }
+
+                    String status = model.getValueAt(row, 5).toString();
+                    cbStatus.setSelectedItem(status);
                     
                     txtBerat.setText(model.getValueAt(row, 3).toString());
-                    txtStatus.setText(model.getValueAt(row, 5).toString());
                 }
             }
         });
@@ -166,8 +169,7 @@ public class PanelTransaksi extends JPanel {
             int idLayanan = Integer.parseInt(selectedLayanan.split(" - ")[0]);
             
             double berat = Double.parseDouble(txtBerat.getText());
-            String status = txtStatus.getText();
-
+            String status = cbStatus.getSelectedItem().toString();
             // Ambil harga layanan
             Connection conn = KoneksiDB.configDB();
             Statement stm = conn.createStatement();
@@ -216,8 +218,8 @@ public class PanelTransaksi extends JPanel {
             int idLayanan = Integer.parseInt(selectedLayanan.split(" - ")[0]);
             
             double berat = Double.parseDouble(txtBerat.getText());
-            String status = txtStatus.getText();
-
+            String status = cbStatus.getSelectedItem().toString();
+            
             // Ambil harga layanan
             Connection conn = KoneksiDB.configDB();
             Statement stm = conn.createStatement();
@@ -292,7 +294,7 @@ public class PanelTransaksi extends JPanel {
             cbLayanan.setSelectedIndex(0);
         }
         txtBerat.setText("");
-        txtStatus.setText("");
+        cbStatus.setSelectedIndex(0);   
         tableTransaksi.clearSelection();
     }
 
