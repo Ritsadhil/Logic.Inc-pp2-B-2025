@@ -93,7 +93,7 @@ public class FrameLogin extends JFrame{
                 this.dispose(); 
                 new ManajemenLaundryApp(); 
             } else {
-                JOptionPane.showMessageDialog(this, "Username atau Passwordnya salah mase", "Login Gagal lmao mase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Username atau Passwordnya salah mase", "Login Gagal mase", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (Exception e) {
