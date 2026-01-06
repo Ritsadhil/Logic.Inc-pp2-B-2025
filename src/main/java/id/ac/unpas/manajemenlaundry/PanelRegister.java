@@ -16,15 +16,16 @@ import javax.swing.SwingConstants;
 
 public class PanelRegister extends JPanel {
     private JTextField txtUsername;
-    private JPasswordField txtPassword;
+    private JPasswordField txtPassword, txtKode;
     private JButton btnSimpan;
+    private final String KODE = "monokotil";
 
     public PanelRegister() {
         setLayout(new BorderLayout());
         JLabel lblJudul = new JLabel("Buat Akun Baru", SwingConstants.CENTER);
         lblJudul.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
 
-        JPanel panelForm = new JPanel(new GridLayout(2, 2, 10, 10));
+        JPanel panelForm = new JPanel(new GridLayout(3, 2, 10, 10));
         panelForm.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         panelForm.add(new JLabel("Username :"));
@@ -34,6 +35,10 @@ public class PanelRegister extends JPanel {
         panelForm.add(new JLabel("Password :"));
         txtPassword = new JPasswordField();
         panelForm.add(txtPassword);
+
+        panelForm.add(new JLabel("Kode Keamanan :"));
+        txtKode = new JPasswordField();
+        panelForm.add(txtKode);
 
 
 
@@ -57,6 +62,11 @@ public class PanelRegister extends JPanel {
 
         if (user.isEmpty() || pass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua kolom mase");
+            return;
+        }
+
+        if (!new String(txtKode.getPassword()).equals(KODE)) {
+            JOptionPane.showMessageDialog(this, "Kode Keamanan SALAH!", "Akses Ditolak", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
