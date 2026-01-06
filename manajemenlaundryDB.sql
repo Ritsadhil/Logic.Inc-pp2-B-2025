@@ -21,3 +21,9 @@ CREATE TABLE transaksi (
     FOREIGN KEY (id_pelanggan) REFERENCES pelanggan(id),
     FOREIGN KEY (id_layanan) REFERENCES layanan(id)
 );
+
+CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50),
+    password VARCHAR(50)
+);
