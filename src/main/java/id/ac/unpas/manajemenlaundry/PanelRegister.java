@@ -18,7 +18,7 @@ public class PanelRegister extends JPanel {
     private JTextField txtUsername;
     private JPasswordField txtPassword, txtKode;
     private JButton btnSimpan;
-    private final String KODE = "monokotil";
+    private String KODE = "14102004";
 
     public PanelRegister() {
         setLayout(new BorderLayout());
