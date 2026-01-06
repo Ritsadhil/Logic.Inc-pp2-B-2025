@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -27,10 +28,11 @@ public class FrameLogin extends JFrame{
 
     public FrameLogin() {
         setTitle("Login");
-        setSize(400, 250);
+        setSize(400, 350);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+        JTabbedPane tabbedPane = new JTabbedPane();
+        JPanel panelLogin = new JPanel(new BorderLayout());
 
         JPanel panelForm = new JPanel(new GridLayout(2, 2, 10, 10));
         panelForm.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -43,6 +45,9 @@ public class FrameLogin extends JFrame{
         txtPassword = new JPasswordField();
         panelForm.add(txtPassword);
 
+        JPanel panelWrapper = new JPanel(new BorderLayout());
+        panelWrapper.add(panelForm, BorderLayout.NORTH);
+
         JPanel panelTombol = new JPanel(new FlowLayout());
         btnLogin = new JButton("Login");
         btnCancel = new JButton("Batal");
@@ -52,9 +57,13 @@ public class FrameLogin extends JFrame{
 
         JLabel lblJudul = new JLabel("Kamu Siapa?", SwingConstants.CENTER);
 
-        add(lblJudul, BorderLayout.NORTH);
-        add(panelForm, BorderLayout.CENTER);
-        add(panelTombol, BorderLayout.SOUTH);
+        panelLogin.add(lblJudul, BorderLayout.NORTH);
+        panelLogin.add(panelForm, BorderLayout.CENTER);
+        panelLogin.add(panelTombol, BorderLayout.SOUTH);
+
+        tabbedPane.addTab("Login", panelLogin);
+        tabbedPane.addTab("Register", new PanelRegister());  
+        add(tabbedPane);
 
         
         btnLogin.addActionListener(new ActionListener() {
@@ -99,7 +108,10 @@ public class FrameLogin extends JFrame{
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error Database: " + e.getMessage());
         }
+
     }
+
+    
 
       public static void main(String[] args) {
         try {
@@ -109,4 +121,3 @@ public class FrameLogin extends JFrame{
         new FrameLogin().setVisible(true);;
     }
 }
-
